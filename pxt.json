@@ -1,0 +1,30 @@
+{
+    "name": "CastleReLights",
+    "description": "",
+    "dependencies": {
+        "core": "*",
+        "radio": "*"
+    },
+    "files": [
+        "main.blocks",
+        "main.ts",
+        "README.md",
+        "displaySendBuffer.asm",
+        "display.ts",
+        "planetxbasic.ts",
+        "nezha.ts",
+        "kong.ts",
+        "KongPixel.ts"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "targetVersions": {
+        "target": "6.0.28",
+        "targetId": "microbit"
+    },
+    "supportedTargets": [
+        "microbit"
+    ],
+    "preferredEditor": "blocksprj"
+}
