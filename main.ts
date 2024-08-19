@@ -23,6 +23,16 @@ function fireTick () {
         }
     }
 }
+function glowTick () {
+    for (let light2 = 0; light2 <= totalLights - 1; light2++) {
+        thisBrightness = brightsGlow[light2]
+        if (thisBrightness < 150) {
+            brightsGlow[light2] = thisBrightness + 1.5
+        } else if (thisBrightness >= 150) {
+            brightsGlow[light2] = 0
+        }
+    }
+}
 function runParade () {
     for (let index = 0; index <= totalLights - 1; index++) {
         huesParade[index] = letterToHue(colorsParade[randint(0, colorsParade.length - 1)])
@@ -65,6 +75,17 @@ function runIdle () {
         }
     }
 }
+function runIndicate () {
+    for (let index = 0; index <= totalLights - 1; index++) {
+        if (index < 10) {
+            brightsIndicate[index] = 50
+            togglesIndicate[index] = 0
+        } else {
+            brightsIndicate[index] = 50
+            togglesIndicate[index] = 1
+        }
+    }
+}
 function paradeTick () {
     for (let light2 = 0; light2 <= totalLights - 1; light2++) {
         theBright = brightsParade[light2]
@@ -94,15 +115,12 @@ function doStep (space: string, action: string) {
     if (space == "A") {
         setEffect("XJLMN", "Off")
         setEffect("A", "Step")
-        setHues("B", letterToHue("R"))
         setEffect("B", "Indicate")
-        setHues("C", letterToHue("B"))
         setEffect("C", "Indicate")
     } else if (space == "B") {
         if (action == "Step") {
             setEffect("X", "Off")
             setEffect("B", "Step")
-            setHues("D", letterToHue("G"))
             setEffect("D", "Indicate")
         } else if (action == "Mine") {
             setEffect("X", "Off")
@@ -112,14 +130,69 @@ function doStep (space: string, action: string) {
         if (action == "Step") {
             setEffect("X", "Off")
             setEffect("C", "Step")
-            setHues("E", letterToHue("O"))
             setEffect("E", "Indicate")
         } else if (action == "Mine") {
             setEffect("X", "Off")
             setEffect("C", "Mine")
         }
-    } else {
-    	
+    } else if (space == "D") {
+        if (action == "Step") {
+            setEffect("X", "Off")
+            setEffect("D", "Step")
+            setEffect("EF", "Indicate")
+        } else if (action == "Mine") {
+            setEffect("X", "Off")
+            setEffect("D", "Mine")
+        }
+    } else if (space == "E") {
+        if (action == "Step") {
+            setEffect("X", "Off")
+            setEffect("E", "Step")
+            setEffect("DG", "Indicate")
+        } else if (action == "Mine") {
+            setEffect("X", "Off")
+            setEffect("E", "Mine")
+        }
+    } else if (space == "F") {
+        if (action == "Step") {
+            setEffect("X", "Off")
+            setEffect("F", "Step")
+            setEffect("H", "Indicate")
+        } else if (action == "Mine") {
+            setEffect("X", "Off")
+            setEffect("F", "Mine")
+        }
+    } else if (space == "G") {
+        if (action == "Step") {
+            setEffect("X", "Off")
+            setEffect("G", "Step")
+            setEffect("I", "Indicate")
+        } else if (action == "Mine") {
+            setEffect("X", "Off")
+            setEffect("G", "Mine")
+        }
+    } else if (space == "H") {
+        if (action == "Step") {
+            setEffect("X", "Off")
+            setEffect("H", "Step")
+            setEffect("I", "Indicate")
+        } else if (action == "Mine") {
+            setEffect("X", "Off")
+            setEffect("H", "Mine")
+        } else if (action == "Win") {
+            setEffect("X", "Parade")
+        }
+    } else if (space == "I") {
+        if (action == "Step") {
+            setEffect("X", "Off")
+            setEffect("I", "Step")
+            setEffect("H", "Indicate")
+        } else if (action == "Mine") {
+            setEffect("X", "Off")
+            setEffect("I", "Mine")
+        } else if (action == "Win") {
+            setEffect("X", "Parade")
+        }
     }
 }
 function idleTick () {
@@ -146,6 +219,11 @@ function runFire () {
         saturationFire[index] = 100
         togglesFire[index] = randint(0, 1)
         brightsFire[index] = randint(30, 80)
+    }
+}
+function runGlow () {
+    for (let index = 0; index <= totalLights - 1; index++) {
+        brightsGlow[index] = 0
     }
 }
 function setHues (regions: string, hue: number) {
@@ -370,43 +448,43 @@ radio.onReceivedValue(function (name, value) {
         if (position.length > 1) {
             if (position == "Intro") {
                 if (value == 1) {
+                    setEffect("Z", "Off")
                     pulseFan = false
                     fogLevel = 3
                     Kong.setServoAngel(Kong.ServoList.S0, 50)
-                    basic.pause(1500)
-                    setEffect("Z", "Mine")
+                    basic.pause(750)
+                    runGlow()
+                    setEffect("Z", "Glow")
                 } else if (value == 2) {
-                	
-                } else if (value == 3) {
-                	
+                    setEffect("Z", "Parade")
                 } else if (value == 4) {
-                	
+                    setEffect("HI", "Mine")
                 } else if (value == 5) {
-                	
+                    setEffect("HI", "Step")
                 } else if (value == 6) {
-                	
-                } else if (value == 7) {
-                	
-                } else if (value == 8) {
-                	
-                } else if (value == 9) {
-                	
-                } else if (value == 10) {
-                	
+                    setEffect("Z", "Idle")
                 } else if (value == 11) {
-                	
-                } else if (value == 12) {
-                	
+                    setEffect("Z", "Idle")
                 } else if (value == 13) {
-                	
-                } else if (value == 14) {
-                	
+                    setEffect("A", "Step")
                 } else if (value == 15) {
-                	
-                } else if (value == 16) {
-                	
-                } else if (value == 17) {
-                	
+                    setEffect("X", "Off")
+                    setEffect("B", "Step")
+                    setEffect("D", "Indicate")
+                    basic.pause(1000)
+                    setEffect("X", "Off")
+                    setEffect("D", "Step")
+                    setEffect("EF", "Indicate")
+                    basic.pause(1000)
+                    setEffect("X", "Off")
+                    setEffect("E", "Step")
+                    setEffect("DG", "Indicate")
+                    basic.pause(1000)
+                    setEffect("X", "Off")
+                    setEffect("G", "Step")
+                    setEffect("I", "Indicate")
+                    basic.pause(1000)
+                    setEffect("X", "Off")
                 } else if (value == 18) {
                 	
                 } else if (value == 19) {
@@ -420,6 +498,11 @@ radio.onReceivedValue(function (name, value) {
                 } else if (value == 23) {
                 	
                 } else if (value == 30) {
+                    basic.pause(1000)
+                    setEffect("K", "Mine")
+                    basic.pause(2000)
+                    setEffect("CE", "Mine")
+                    basic.pause(2000)
                     if (pins.analogReadPin(AnalogPin.P0) < 10) {
                         basic.pause(7000)
                         Kong.ksetMotorSpeed(Kong.MotorList.M2, 15)
@@ -487,6 +570,24 @@ function runMine () {
         togglesMine[index] = 0
     }
 }
+function indicateTick () {
+    for (let light2 = 0; light2 <= totalLights - 1; light2++) {
+        thisBrightness = brightsIndicate[light2]
+        if (togglesIndicate[light2] == 0) {
+            if (thisBrightness < 80) {
+                brightsIndicate[light2] = thisBrightness + 15
+            } else if (thisBrightness >= 80) {
+                togglesIndicate[light2] = 1
+            }
+        } else if (togglesIndicate[light2] == 1) {
+            if (thisBrightness > 25) {
+                brightsIndicate[light2] = thisBrightness - 5
+            } else if (thisBrightness <= 25) {
+                togglesIndicate[light2] = 0
+            }
+        }
+    }
+}
 let thisBright = 0
 let thisSaturation = 0
 let thisHue = 0
@@ -496,12 +597,15 @@ let buttonRaw = 0
 let position = ""
 let togglesMine: number[] = []
 let brightsMine: number[] = []
-let thisBrightness = 0
 let lightLoop = 0
 let saturationFire: number[] = []
 let thisH = 0
+let togglesIndicate: number[] = []
+let brightsIndicate: number[] = []
 let togglesIdle: number[] = []
 let huesIdle: number[] = []
+let brightsGlow: number[] = []
+let thisBrightness = 0
 let nextColor = ""
 let togglesFire: number[] = []
 let huesFire: number[] = []
@@ -565,7 +669,7 @@ for (let index = 0; index < totalLights; index++) {
     huesIndicate.push(0)
     huesLast.push(50)
     saturationParade.push(100)
-    stripEffects.push("Off")
+    stripEffects.push("Indicate")
 }
 Kong.ksetMotorSpeed(Kong.MotorList.M1, 0)
 Kong.ksetMotorSpeed(Kong.MotorList.M2, 0)
@@ -584,6 +688,17 @@ runParade()
 runFire()
 runIdle()
 runMine()
+runIndicate()
+setHues("A", letterToHue("R"))
+setHues("B", letterToHue("Y"))
+setHues("C", letterToHue("B"))
+setHues("D", letterToHue("O"))
+setHues("E", letterToHue("C"))
+setHues("F", letterToHue("K"))
+setHues("G", letterToHue("P"))
+setHues("H", letterToHue("C"))
+setHues("I", letterToHue("G"))
+setHues("K", letterToHue("G"))
 loops.everyInterval(10000, function () {
     if (pulseFan && pins.analogReadPin(AnalogPin.P0) < 10) {
         Kong.ksetMotorSpeed(Kong.MotorList.M2, 15)
@@ -647,6 +762,8 @@ control.inBackground(function () {
         fireTick()
         idleTick()
         mineTick()
+        glowTick()
+        indicateTick()
         for (let lightIndex = 0; lightIndex <= totalLights - 1; lightIndex++) {
             thisEffect = stripEffects[lightIndex]
             thisHue = huesLast[lightIndex]
@@ -678,7 +795,7 @@ control.inBackground(function () {
                 thisSaturation = 100
                 thisBright = Math.min(50, brightsMine[lightIndex])
             } else if (thisEffect == "Indicate") {
-                thisBright = 50
+                thisBright = Math.min(brightsIndicate[lightIndex], 50)
                 thisSaturation = 100
                 thisHue = huesIndicate[lightIndex]
             } else if (thisEffect == "Fire") {
@@ -690,8 +807,9 @@ control.inBackground(function () {
                 } else if (thisBright < 0) {
                     thisBright = 0
                 }
-            } else if (thisEffect == "Flash") {
-            	
+            } else if (thisEffect == "Glow") {
+                thisBright = Math.min(brightsGlow[lightIndex], 100)
+                thisSaturation = 0
             } else if (thisEffect == "Blink") {
             	
             }
