@@ -98,8 +98,26 @@ function doStep (space: string, action: string) {
         setEffect("B", "Indicate")
         setHues("C", letterToHue("B"))
         setEffect("C", "Indicate")
-    } else if (false) {
-    	
+    } else if (space == "B") {
+        if (action == "Step") {
+            setEffect("X", "Off")
+            setEffect("B", "Step")
+            setHues("D", letterToHue("G"))
+            setEffect("D", "Indicate")
+        } else if (action == "Mine") {
+            setEffect("X", "Off")
+            setEffect("B", "Mine")
+        }
+    } else if (space == "C") {
+        if (action == "Step") {
+            setEffect("X", "Off")
+            setEffect("C", "Step")
+            setHues("E", letterToHue("O"))
+            setEffect("E", "Indicate")
+        } else if (action == "Mine") {
+            setEffect("X", "Off")
+            setEffect("C", "Mine")
+        }
     } else {
     	
     }
@@ -221,14 +239,14 @@ function mineTick () {
     for (let light2 = 0; light2 <= totalLights - 1; light2++) {
         thisBrightness = brightsMine[light2]
         if (togglesMine[light2] == 0) {
-            if (thisBrightness < 50) {
-                brightsMine[light2] = thisBrightness + 10
-            } else if (thisBrightness >= 50) {
+            if (thisBrightness < 200) {
+                brightsMine[light2] = thisBrightness + 50
+            } else if (thisBrightness >= 200) {
                 togglesMine[light2] = 1
             }
         } else if (togglesMine[light2] == 1) {
             if (thisBrightness > 0) {
-                brightsMine[light2] = thisBrightness - 10
+                brightsMine[light2] = thisBrightness - 50
             } else if (thisBrightness <= 0) {
                 togglesMine[light2] = 0
             }
@@ -356,7 +374,7 @@ radio.onReceivedValue(function (name, value) {
                     fogLevel = 3
                     Kong.setServoAngel(Kong.ServoList.S0, 50)
                     basic.pause(1500)
-                    setEffect("Z", "Idle")
+                    setEffect("Z", "Mine")
                 } else if (value == 2) {
                 	
                 } else if (value == 3) {
@@ -465,13 +483,8 @@ radio.onReceivedValue(function (name, value) {
 })
 function runMine () {
     for (let index = 0; index <= totalLights - 1; index++) {
-        if (index % 2 == 0) {
-            brightsMine[index] = 50
-            togglesMine[index] = 0
-        } else {
-            brightsMine[index] = 0
-            togglesMine[index] = 1
-        }
+        brightsMine[index] = 50
+        togglesMine[index] = 0
     }
 }
 let thisBright = 0
@@ -663,7 +676,7 @@ control.inBackground(function () {
             } else if (thisEffect == "Mine") {
                 thisHue = letterToHue("R")
                 thisSaturation = 100
-                thisBright = brightsMine[lightIndex]
+                thisBright = Math.min(50, brightsMine[lightIndex])
             } else if (thisEffect == "Indicate") {
                 thisBright = 50
                 thisSaturation = 100
