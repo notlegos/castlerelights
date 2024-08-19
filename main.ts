@@ -90,6 +90,20 @@ function paradeTick () {
         }
     }
 }
+function doStep (space: string, action: string) {
+    if (space == "A") {
+        setEffect("XJLMN", "Off")
+        setEffect("A", "Step")
+        setHues("B", letterToHue("R"))
+        setEffect("B", "Indicate")
+        setHues("C", letterToHue("B"))
+        setEffect("C", "Indicate")
+    } else if (false) {
+    	
+    } else {
+    	
+    }
+}
 function idleTick () {
     for (let light2 = 0; light2 <= totalLights - 1; light2++) {
         thisH = huesIdle[light2]
@@ -116,9 +130,91 @@ function runFire () {
         brightsFire[index] = randint(30, 80)
     }
 }
-function stripString (theColors: string) {
-    for (let index2 = 0; index2 <= totalLights - 1; index2++) {
-        huesParade[index2] = letterToHue(theColors.charAt(index2))
+function setHues (regions: string, hue: number) {
+    if (regions.includes("A")) {
+        huesIndicate[8] = hue
+        huesIndicate[9] = hue
+        huesIndicate[10] = hue
+        huesIndicate[11] = hue
+    }
+    if (regions.includes("B")) {
+        huesIndicate[6] = hue
+        huesIndicate[7] = hue
+    }
+    if (regions.includes("C")) {
+        huesIndicate[12] = hue
+        huesIndicate[13] = hue
+    }
+    if (regions.includes("D")) {
+        huesIndicate[4] = hue
+        huesIndicate[5] = hue
+    }
+    if (regions.includes("E")) {
+        huesIndicate[14] = hue
+        huesIndicate[15] = hue
+    }
+    if (regions.includes("F")) {
+        huesIndicate[2] = hue
+        huesIndicate[3] = hue
+    }
+    if (regions.includes("G")) {
+        huesIndicate[16] = hue
+        huesIndicate[17] = hue
+    }
+    if (regions.includes("H")) {
+        huesIndicate[0] = hue
+        huesIndicate[1] = hue
+    }
+    if (regions.includes("I")) {
+        huesIndicate[18] = hue
+        huesIndicate[19] = hue
+    }
+    if (regions.includes("J")) {
+        huesIndicate[21] = hue
+    }
+    if (regions.includes("K")) {
+        huesIndicate[22] = hue
+        huesIndicate[23] = hue
+    }
+    if (regions.includes("L")) {
+        huesIndicate[24] = hue
+    }
+    if (regions.includes("M")) {
+        huesIndicate[25] = hue
+    }
+    if (regions.includes("N")) {
+        huesIndicate[26] = hue
+    }
+    if (regions.includes("O")) {
+        huesIndicate[20] = hue
+        huesIndicate[27] = hue
+    }
+    if (regions.includes("P")) {
+        huesIndicate[28] = hue
+        huesIndicate[29] = hue
+        huesIndicate[30] = hue
+        huesIndicate[31] = hue
+    }
+    if (regions.includes("X")) {
+        lightLoop = 0
+        while (lightLoop <= 19) {
+            huesIndicate[lightLoop] = hue
+            lightLoop = lightLoop + 1
+        }
+    }
+    if (regions.includes("Y")) {
+        lightLoop = 20
+        while (lightLoop <= 31) {
+            huesIndicate[lightLoop] = hue
+            lightLoop = lightLoop + 1
+        }
+    }
+    if (regions.includes("Z")) {
+        lightLoop = 0
+        while (lightLoop <= 31) {
+            huesIndicate[lightLoop] = hue
+            lightLoop = lightLoop + 1
+        }
     }
 }
 function mineTick () {
@@ -354,13 +450,13 @@ radio.onReceivedValue(function (name, value) {
             }
         } else {
             if (value == 1) {
-            	
+                doStep(position, "Step")
             } else if (value == 2) {
-            	
+                doStep(position, "Indicate")
             } else if (value == 3) {
-            	
+                doStep(position, "Mine")
             } else if (value == 4) {
-            	
+                doStep(position, "Win")
             } else {
             	
             }
@@ -385,10 +481,10 @@ let thisEffect = ""
 let buttonPress = ""
 let buttonRaw = 0
 let position = ""
-let lightLoop = 0
 let togglesMine: number[] = []
 let brightsMine: number[] = []
 let thisBrightness = 0
+let lightLoop = 0
 let saturationFire: number[] = []
 let thisH = 0
 let togglesIdle: number[] = []
@@ -400,6 +496,7 @@ let theColor = ""
 let brightsFire: number[] = []
 let theBright = 0
 let colorsFire: string[] = []
+let huesIndicate: number[] = []
 let totalLights = 0
 let togglesParade: number[] = []
 let huesParade: number[] = []
@@ -452,6 +549,7 @@ for (let index = 0; index < totalLights; index++) {
     brightnessLast.push(50)
     togglesParade.push(0)
     huesParade.push(50)
+    huesIndicate.push(0)
     huesLast.push(50)
     saturationParade.push(100)
     stripEffects.push("Off")
@@ -561,13 +659,15 @@ control.inBackground(function () {
                 thisBright = 50
                 thisSaturation = 100
             } else if (thisEffect == "Step") {
-            	
+                thisBright = 100
             } else if (thisEffect == "Mine") {
                 thisHue = letterToHue("R")
                 thisSaturation = 100
                 thisBright = brightsMine[lightIndex]
             } else if (thisEffect == "Indicate") {
-                thisBright = 100
+                thisBright = 50
+                thisSaturation = 100
+                thisHue = huesIndicate[lightIndex]
             } else if (thisEffect == "Fire") {
                 thisHue = huesFire[lightIndex]
                 thisBright = brightsFire[lightIndex]
