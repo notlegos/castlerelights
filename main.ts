@@ -27,7 +27,7 @@ function glowTick () {
     for (let light2 = 0; light2 <= totalLights - 1; light2++) {
         thisBrightness = brightsGlow[light2]
         if (thisBrightness < 150) {
-            brightsGlow[light2] = thisBrightness + 1.5
+            brightsGlow[light2] = thisBrightness + 2.5
         } else if (thisBrightness >= 150) {
             brightsGlow[light2] = 0
         }
@@ -180,7 +180,8 @@ function doStep (space: string, action: string) {
             setEffect("X", "Off")
             setEffect("H", "Mine")
         } else if (action == "Win") {
-            setEffect("X", "Parade")
+            setEffect("X", "Off")
+            setEffect("H", "Indicate")
         }
     } else if (space == "I") {
         if (action == "Step") {
@@ -191,7 +192,8 @@ function doStep (space: string, action: string) {
             setEffect("X", "Off")
             setEffect("I", "Mine")
         } else if (action == "Win") {
-            setEffect("X", "Parade")
+            setEffect("X", "Off")
+            setEffect("I", "Indicate")
         }
     }
 }
@@ -452,56 +454,91 @@ radio.onReceivedValue(function (name, value) {
                     pulseFan = false
                     fogLevel = 3
                     Kong.setServoAngel(Kong.ServoList.S0, 50)
-                    basic.pause(750)
+                    basic.pause(850)
                     runGlow()
                     setEffect("Z", "Glow")
-                } else if (value == 2) {
+                    basic.pause(1050)
                     setEffect("Z", "Parade")
-                } else if (value == 4) {
-                    setEffect("HI", "Mine")
-                } else if (value == 5) {
+                } else if (value == 2) {
+                	
+                } else if (value == 3) {
+                    basic.pause(1000)
+                    setEffect("Z", "Fire")
+                    basic.pause(1500)
                     setEffect("HI", "Step")
+                } else if (value == 5) {
+                    setEffect("X", "Off")
+                    setEffect("HI", "Indicate")
                 } else if (value == 6) {
                     setEffect("Z", "Idle")
                 } else if (value == 11) {
                     setEffect("Z", "Idle")
-                } else if (value == 13) {
-                    setEffect("A", "Step")
+                    setEffect("A", "Indicate")
+                } else if (value == 14) {
+                    setEffect("X", "Off")
+                    setEffect("A", "Indicate")
                 } else if (value == 15) {
-                    setEffect("X", "Off")
-                    setEffect("B", "Step")
-                    setEffect("D", "Indicate")
+                    setEffect("A", "Step")
+                    basic.pause(1000)
+                    doStep("B", "Step")
+                    basic.pause(1000)
+                    doStep("D", "Step")
+                    basic.pause(1000)
+                    doStep("E", "Step")
+                    basic.pause(1000)
+                    doStep("G", "Step")
+                    basic.pause(1000)
+                    doStep("I", "Step")
+                    basic.pause(1000)
+                    doStep("H", "Step")
+                    basic.pause(1000)
+                    doStep("H", "Win")
                     basic.pause(1000)
                     setEffect("X", "Off")
-                    setEffect("D", "Step")
-                    setEffect("EF", "Indicate")
-                    basic.pause(1000)
-                    setEffect("X", "Off")
-                    setEffect("E", "Step")
-                    setEffect("DG", "Indicate")
-                    basic.pause(1000)
-                    setEffect("X", "Off")
-                    setEffect("G", "Step")
-                    setEffect("I", "Indicate")
-                    basic.pause(1000)
-                    setEffect("X", "Off")
+                } else if (value == 16) {
+                    setEffect("A", "Indicate")
+                } else if (value == 17) {
+                    setEffect("A", "Step")
                 } else if (value == 18) {
-                	
+                    setEffect("X", "Off")
+                    setEffect("X", "Indicate")
+                    setEffect("A", "Off")
                 } else if (value == 19) {
-                	
-                } else if (value == 20) {
-                	
-                } else if (value == 21) {
-                	
-                } else if (value == 22) {
-                	
+                    basic.pause(1000)
+                    setEffect("X", "Off")
                 } else if (value == 23) {
+                    Kong.setServoAngel(Kong.ServoList.S7, 110)
+                    setEffect("B", "Mine")
+                } else if (value == 24) {
+                    Kong.setServoAngel(Kong.ServoList.S2, 40)
+                    setEffect("HI", "Mine")
+                } else if (value == 25) {
+                    Kong.setServoAngel(Kong.ServoList.S1, 85)
+                    setEffect("C", "Mine")
+                } else if (value == 26) {
+                    setEffect("BCHI", "Off")
+                    Kong.setServoAngel(Kong.ServoList.S7, 50)
+                    Kong.setServoAngel(Kong.ServoList.S2, 110)
+                    Kong.setServoAngel(Kong.ServoList.S1, 20)
+                } else if (value == 26) {
+                	
+                } else if (value == 27) {
+                    setEffect("CE", "Indicate")
+                } else if (value == 28) {
+                    setEffect("K", "Indicate")
+                } else if (false) {
+                	
+                } else if (false) {
+                	
+                } else if (false) {
                 	
                 } else if (value == 30) {
-                    basic.pause(1000)
-                    setEffect("K", "Mine")
+                    setEffect("Z", "Off")
+                    setEffect("Y", "Idle")
+                    basic.pause(0)
+                    setEffect("K", "Indicate")
                     basic.pause(2000)
-                    setEffect("CE", "Mine")
+                    setEffect("CE", "Indicate")
                     basic.pause(2000)
                     if (pins.analogReadPin(AnalogPin.P0) < 10) {
                         basic.pause(7000)
@@ -515,9 +552,7 @@ radio.onReceivedValue(function (name, value) {
                     }
                     pulseFan = true
                     fogLevel = 1
-                } else if (false) {
-                	
-                } else if (false) {
+                } else {
                 	
                 }
             } else if (position == "Sock") {
@@ -698,7 +733,7 @@ setHues("F", letterToHue("K"))
 setHues("G", letterToHue("P"))
 setHues("H", letterToHue("C"))
 setHues("I", letterToHue("G"))
-setHues("K", letterToHue("G"))
+setHues("K", letterToHue("Y"))
 loops.everyInterval(10000, function () {
     if (pulseFan && pins.analogReadPin(AnalogPin.P0) < 10) {
         Kong.ksetMotorSpeed(Kong.MotorList.M2, 15)
