@@ -474,7 +474,7 @@ function setEffect (regions: string, effect: string) {
     }
 }
 function fanVent () {
-    if (pins.analogReadPin(AnalogReadWritePin.P0) < 30) {
+    if (pins.analogReadPin(AnalogReadWritePin.P0) < 10) {
         basic.pause(7000)
         Kong.ksetMotorSpeed(Kong.MotorList.M2, 15)
         Kong.setServoAngel(Kong.ServoList.S0, 140)
@@ -515,7 +515,7 @@ radio.onReceivedValue(function (name, value) {
         if (position.length > 1) {
             if (position == "Intro") {
                 if (value > 50) {
-                    Kong.ksetMotorSpeed(Kong.MotorList.M1, 10)
+                    Kong.ksetMotorSpeed(Kong.MotorList.M1, 12)
                     setEffect("Z", "Parade")
                     pulseFan = false
                     fogLevel = 3
@@ -541,61 +541,58 @@ radio.onReceivedValue(function (name, value) {
                     basic.pause(3000)
                     setEffect("Z", "Off")
                     setEffect("CE", "Indicate")
-                } else if (value == 5) {
+                } else if (value == 6) {
+                    setEffect("Z", "Idle")
+                } else if (value == 11) {
                     setEffect("Z", "Idle")
                     setEffect("A", "Indicate")
-                } else if (value == 6) {
-                    setEffect("Z", "Off")
-                    doWalk()
-                } else if (value == 7) {
-                    setEffect("Z", "Off")
+                } else if (value == 14) {
+                    setEffect("X", "Off")
                     setEffect("A", "Indicate")
-                } else if (value == 8) {
+                } else if (value == 15) {
+                    doWalk()
+                } else if (value == 16) {
+                    setEffect("A", "Indicate")
+                } else if (value == 17) {
                     setEffect("A", "Step")
-                } else if (value == 9) {
+                } else if (value == 18) {
                     setEffect("X", "Off")
                     setEffect("X", "Indicate")
                     setEffect("A", "Off")
-                } else if (value == 10) {
+                } else if (value == 19) {
+                    basic.pause(1000)
                     setEffect("X", "Off")
-                } else if (value == 16) {
+                } else if (value == 23) {
                     Kong.setServoAngel(Kong.ServoList.S7, 110)
                     setEffect("B", "Mine")
-                    basic.pause(500)
+                } else if (value == 24) {
                     Kong.setServoAngel(Kong.ServoList.S2, 40)
                     setEffect("HI", "Mine")
-                    basic.pause(500)
+                } else if (value == 25) {
                     Kong.setServoAngel(Kong.ServoList.S1, 85)
                     setEffect("C", "Mine")
-                } else if (value == 17) {
-                    setEffect("BCHI", "Off")
-                    Kong.setServoAngel(Kong.ServoList.S1, 20)
-                    basic.pause(500)
-                    Kong.setServoAngel(Kong.ServoList.S2, 110)
-                    basic.pause(500)
-                    Kong.setServoAngel(Kong.ServoList.S7, 50)
-                } else if (value == 18) {
-                    setEffect("CE", "Indicate")
-                } else if (value == 19) {
-                    setEffect("K", "Indicate")
-                    basic.pause(2000)
-                    setEffect("Y", "Idle")
-                    setEffect("K", "Indicate")
-                } else if (value == 30) {
-                    setEffect("K", "Indicate")
-                    fanVent()
-                    pulseFan = true
-                    fogLevel = 1
                 } else if (value == 26) {
-                	
+                    setEffect("BCHI", "Off")
+                    Kong.setServoAngel(Kong.ServoList.S7, 50)
+                    Kong.setServoAngel(Kong.ServoList.S2, 110)
+                    Kong.setServoAngel(Kong.ServoList.S1, 20)
                 } else if (value == 27) {
-                	
+                    setEffect("CE", "Indicate")
                 } else if (value == 28) {
-                	
+                    setEffect("K", "Indicate")
                 } else if (value == 29) {
                 	
                 } else if (value == 30) {
-                	
+                    setEffect("Z", "Off")
+                    setEffect("Y", "Idle")
+                    basic.pause(0)
+                    setEffect("K", "Indicate")
+                    basic.pause(2000)
+                    setEffect("CE", "Indicate")
+                    basic.pause(2000)
+                    fanVent()
+                    pulseFan = true
+                    fogLevel = 1
                 } else {
                 	
                 }
@@ -818,7 +815,7 @@ setHues("H", letterToHue("C"))
 setHues("I", letterToHue("G"))
 setHues("K", letterToHue("Y"))
 loops.everyInterval(10000, function () {
-    if (pulseFan && pins.analogReadPin(AnalogReadWritePin.P0) < 30) {
+    if (pulseFan && pins.analogReadPin(AnalogReadWritePin.P0) < 10) {
         Kong.ksetMotorSpeed(Kong.MotorList.M2, 15)
         basic.pause(500)
         Kong.ksetMotorSpeed(Kong.MotorList.M2, 10)
@@ -829,7 +826,7 @@ loops.everyInterval(10000, function () {
     }
 })
 loops.everyInterval(500, function () {
-    if (pins.analogReadPin(AnalogReadWritePin.P0) > 30) {
+    if (pins.analogReadPin(AnalogReadWritePin.P0) > 10) {
         pins.digitalWritePin(DigitalPin.P2, 1)
         pins.digitalWritePin(DigitalPin.P8, 1)
         pins.digitalWritePin(DigitalPin.P13, 1)
@@ -861,7 +858,7 @@ loops.everyInterval(500, function () {
         buttonPress = "B"
     } else if (buttonRaw < 110) {
         buttonPress = "C"
-        Kong.ksetMotorSpeed(Kong.MotorList.M1, 10)
+        Kong.ksetMotorSpeed(Kong.MotorList.M1, 20)
         runParade()
     } else if (buttonRaw < 200) {
         buttonPress = "D"
